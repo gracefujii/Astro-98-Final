@@ -2,3 +2,5 @@
 
 The Memory Game
 Functions
+
+Define function:
