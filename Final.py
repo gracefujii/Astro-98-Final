@@ -1,4 +1,4 @@
-import pygame
+import pygame as pg
 
 
 
@@ -8,16 +8,23 @@ import pygame
 
 
 def game ():  #main game function
-    pygame.init()
+    pg.init()
     global(clock,display)  #global variables to be used in other functions
-    clock=pygame.time.clock()
-    display=pygame.display.set_mode(windowwidth,windowheight)  #show the game screen
-    
+    clock=pg.time.clock()
+    display=pg.display.set_mode(windowwidth,windowheight)  #show the game screen
     mousex=o
     mousey=o
     gameboard=getrandomizedboard()
     revealedboxes=generaterevealedboxesdata(False)
-    
+    display.fill()   #add color background
     firstchoice=none
-    startgameanimation(gameboard)
-    display.fill
+    startgameanimation(gameboard)  #flash symbols underneath boxes
+    while true:
+        click=false
+        display.fill() #fill screen to cover
+        drawboard(gameboard,revealedboxes)
+        for event in pg.event.get()
+            if event.type==QUIT
+                pg.quit()
+                sys.exit()
+        
