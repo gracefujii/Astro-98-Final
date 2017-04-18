@@ -1,4 +1,5 @@
 import pygame as pg
+import random
 
 fps = 30
 #board parameters
@@ -40,7 +41,7 @@ def drawIcon(shape,color,boxx,boxy):
     quart = int(boxsize * .25)
     half = int(boxsize * .5)
     left, top = leftTopCoordsOfBox(boxx, boxy) # get coordinates from board 
-    # to draw the shapes of the thigns to find. Uses draw method which is pre made.
+    # to draw the shapes of the things to find. Uses draw method which is pre made.
     if shape == CIRCLE:
         pygame.draw.circle(display, color, (left + half, top + half), half - 5)
     elif shape == SQUARE:
@@ -56,6 +57,8 @@ def drawIcon(shape,color,boxx,boxy):
     elif shape == ELLIPSE:
         pygame.draw.ellipse(display, color, (left, top + quarter, boxsize, half))
         
+def getshapeandcolor(gameboard,boxx,boxy):
+    return board[boxx][boxy][0],board[boxx][boxy][1]
         
 def splitgroups(groupsize,thelist):
     result = []
@@ -77,8 +80,11 @@ def lefttopcoords(boxx,boxy):
                 return (boxx, boxy)
     return(None,None)
 
-def getshapeandcolor(gameboard,boxx,boxy):
-    return board[boxx][boxy][0],board[boxx][boxy][1]
+def boxesdata(x):
+    revealedboxes=[]
+    for i in range(boardwidth):
+        revealedboxes.append([x]*boardheight)
+    return revealedboxes
 
 def boxcovers(board,boxes,coverage):
     for box in boxes:
@@ -113,6 +119,22 @@ def highlightbox(boxx,boxy):
     left,top = lefttopcoords(boxx,boxy)
     pg.draw.rect(display,WHITE,(left - 5, top - 5,boxsize + 10,boxsize + 10), 4)
     
+    
+def randomizeboard():
+    symbols=[]
+    for color in allcolors:
+        for shape in allshapes:
+            symbols.append((shape,color))  #each item or symbol consist of two attributes (shape, color)
+    random.shuffle(symbols) #randomize symbols list
+    x=int(boardwitdth*boardlength/2)  #number of symbols used
+    symbols=symbols[:x]*2  #double
+    random.shuffle(symbols) #randomize symbols list again since doubled
+    board=[]
+    for x in range(boardwidth):
+        column=[]
+        for y in range(boardheight):
+            column.append(symbol [0])
+    
 def startgame(gameboard):
     coveredboxes = generaterevealedboxesdata(False)
     boxes = []
@@ -143,33 +165,10 @@ def win(revealedboxes):
             return False
     return True
 
-def randomizeboard():
-    symbols=[]
-    for color in allcolors:
-        for shape in allshapes:
-            symbols.append((shape,color))  #each item or symbol consist of two attributes (shape, color)
-    random.shuffle(symbols) #randomize symbols list
-    x=int(boardwitdth*boardlength/2)  #number of symbols used
-    symbols=symbols[:x]*2  #double
-    random.shuffle(symbols) #randomize symbols list again since doubled
-    board=[]
-    for x in range(boardwidth):
-        column=[]
-        for y in range(boardheight):
-            column.append(symbol [0])
-            
-def boxesdata(x):
-    revealedboxes=[]
-    for i in range(boardwidth):
-        revealedboxes.append([x]*boardheight)
-    return revealedboxes
-
-
-    
 def game():  #main game function
     pg.init()  #initiate pygame
     global(clock,display)  #global variables to be used in more functions
-    clock=pg.time.clock()
+    clock=pg.time.clock() #clock from pygame
     display=pg.display.set_mode(windowwidth,windowheight)  #show the game screen
     mousex=0
     mousey=0
@@ -196,7 +195,7 @@ def game():  #main game function
             if not revealedboxes[box_x][box_y]:  #if box is covered
                 highlightbox (box_x,box_y)   #highlight box function
             if not revealedboxes[box_x][box_y] and click:  #if box is covered and clicke
-                revealboxes (gameboard,[(box_x,box_y)])  #reveal box
+                revealboxes (gameboard,[(box_x,box_y)])  #reveal boxes function
                 revealedboxes[box_x][box_y]=true  #set box as revealed
                 if firstchoice==none:  #if first box clicked..
                     firstchoice= (box_x,box_y)  #save first choice details
@@ -205,7 +204,7 @@ def game():  #main game function
                     shape2,color2= getshapeandcolor(gameboard, box_x, box_y)
                     if shape1!= shape2 or color1 != color2:   #if the symbols do not match...
                         pg.time.wait(1000)   #pause for moment so player can see symbols don't match
-                        coverboxesanimation(gameboard,[(firstchoice[0],firstchoice[1]),(box_x,box_y)])  #cover boxes up
+                        coverboxes(gameboard,[(firstchoice[0],firstchoice[1]),(box_x,box_y)])  #cover boxes up
                         revealedboxes[firstchoice[0]][firstchoice[1]]=false   #first choice box now unrevealed till next click
                         revealedboxes[box_x][box_y]=false   #same for second choice
                     elif win(revealedboxes):  #if symbols match then check if all boxes uncovered with win function
