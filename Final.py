@@ -165,7 +165,7 @@ def win(revealedboxes):
 def game():  #main game function
     pg.init()  #initiate pygame
     global clock,display  #global variables to be used in more functions
-    clock=pg.time.clock() #clock from pygame
+    clock=pg.time.Clock() #clock from pygame
     display=pg.display.set_mode(windowwidth,windowheight)  #show the game screen
     mousex=0
     mousey=0
@@ -217,7 +217,7 @@ def game():  #main game function
                     firstchoice=none
             pg.display.update
             clock.tick(fps)
-           
+
 
                 
                 
