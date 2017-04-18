@@ -222,14 +222,14 @@ class GameMenu():
     def __init__(self, screen, bg_color=(0,0,0)):
         self.screen = screen
         self.bg_color = bg_color
-        self.clock = pygame.time.Clock()
+        self.clock = pg.time.Clock()
     def run(self):
         mainloop = True
         while mainloop:
             # Limit frame speed to 50 FPS
             self.clock.tick(50)
-             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
                     mainloop = False
         # Redraw the background
             self.screen.fill(self.bg_color)
