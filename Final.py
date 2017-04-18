@@ -26,6 +26,48 @@ YELLOW = (250, 200,  50)
 
 allcolors = (GRAY,GREEN,RED,TEAL,PURPLE,PEACH,YELLOW)
 
+def splitintogroupsof(groupsize,thelist):
+    result = []
+    for i in range(0,len(thelist),groupsize):
+        result.append(theList[i:i + groupsize])
+    return result
+
+def lefttopcoords(boxx,boxy):
+    left = boxx * (boxsize + gapsize) + xmargin
+    top = boxy * (boxsize + gapsize) + ymargin
+    return (left,top)
+
+ def getboxatpixel(x,y):
+    for boxx in range(boardwidth):
+        for boxy in range(boardheight):
+            left,top = lefttopcoords(boxx,boxy)
+            boxRect = pg.Rect(left,top,boxsize,boxsize)
+            if boxRect.collidepoint(x,y):
+                return (boxx, boxy)
+    return(None,None)
+
+def getshapeandcolor(gameboard,boxx,boxy):
+    return board[boxx][boxy][0],board[boxx][boxy][1]
+
+def drawboxcovers(gameboard,boxes,coverage):
+    for box in boxes:
+        left,top = lefttopcoords(box[0],box[1])
+        pg.draw.rect(display,WHITE,(left,top,boxsize,boxsize))
+        shape,color = getshapeandcolor(gameboard,box[0],box[1])
+        drawicon(shape,color,box[0],box[1])
+        if coverage > 0:
+            pg.draw.rect(display,GRAY,(left,top,coverage,boxsize))
+    pg.display.update()
+    fpsclock.tick(fps)
+            
+def revealboxesanimation(gameboard,boxestoreveal):
+    for coverage in range(boxsize,(-revealspeed) - 1, -revealspeed):
+        drawboxcovers(gameboard,boxestoreveal,coverage)
+
+def coverboxesanimation(gameboard,boxestocover):
+    for coverage in range(0,boxsize + revealspeed,revealspeed):
+        drawboxcovers(gameboard,boxestocover,coverage)
+
 def drawboard(gameboard,revealedboxes):
     for boxx in range(boardwidth):
         for boxy in range(boardheight):
@@ -39,6 +81,36 @@ def drawboard(gameboard,revealedboxes):
 def drawhighlightbox(boxx,boxy):
     left,top = lefttopcoords(boxx,boxy)
     pg.draw.rect(display,WHITE,(left - 5, top - 5,boxsize + 10,boxsize + 10), 4)
+    
+def startgameanimation(gameboard):
+    coveredboxes = generaterevealedboxesdata(False)
+    boxes = []
+    for x in range(boardwidth):
+        for y in range(boardheight):
+            boxes.append((x,y))
+    random.shuffle(boxes)
+    boxgroups = splitintogroupsof(6,boxes)
+    drawboard(gameboard,coveredboxes)
+    for boxgroup in boxgroups:
+        revealboxesanimation(gameboard,boxgroup)
+        coverboxesanimation(gameboard,boxgroup)
+    
+def gamewonanimation(gameboard):
+    coveredboxes = generaterevealedboxesdata(True)
+    color1 = WHITE
+    color2 = TEAL
+    for i in range(13):
+        color1,color2 = color2,color1
+        display.fill(color1)
+        drawboard(board,coveredboxes)
+        pg.display.update()
+        pg.time.wait(300)
+        
+def win(revealedboxes):
+    for i in revealedboxes:
+        if False in i:
+            return False
+    return True
 
 def randomizeboard():
     symbols=[]
