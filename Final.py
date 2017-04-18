@@ -35,6 +35,10 @@ YELLOW = (250, 200,  50)
 
 allcolors = (GRAY,GREEN,RED,TEAL,PURPLE,PEACH,YELLOW)
 allshapes = (CIRCLE,SQUARE,LINE,ELLIPSE,TRIANGLE)
+bgcolor = WHITE
+bgcolor2 = TEAL
+boxcolor = BLUE
+boxcolor2 = GRAY
 
 # need to figure out triangle
 def drawIcon(shape,color,boxx,boxy):
@@ -71,7 +75,7 @@ def lefttopcoords(boxx,boxy):
     top = boxy * (boxsize + gapsize) + ymargin
     return (left,top)
 
- def getboxatpixel(x,y):
+def getboxatpixel(x,y):
     for boxx in range(boardwidth):
         for boxy in range(boardheight):
             left,top = lefttopcoords(boxx,boxy)
@@ -89,11 +93,11 @@ def boxesdata(x):
 def boxcovers(board,boxes,coverage):
     for box in boxes:
         left,top = lefttopcoords(box[0],box[1])
-        pg.draw.rect(display,WHITE,(left,top,boxsize,boxsize))
+        pg.draw.rect(display,bgcolor,(left,top,boxsize,boxsize))
         shape,color = getshapeandcolor(board,box[0],box[1])
         drawicon(shape,color,box[0],box[1])
         if coverage > 0:
-            pg.draw.rect(display,GRAY,(left,top,coverage,boxsize))
+            pg.draw.rect(display,boxcolor2,(left,top,coverage,boxsize))
     pg.display.update()
     fpsclock.tick(fps)
             
@@ -110,14 +114,14 @@ def drawboard(gameboard,revealedboxes):
         for boxy in range(boardheight):
             left,top = lefttopcoords(boxx,boxy)
             if not revealed[boxx][boxy]:
-                pg.draw.rect(display,BLUE,(left,top,boxsize,boxsize))
+                pg.draw.rect(display,boxcolor,(left,top,boxsize,boxsize))
             else:
                 shape,color = getshapeandcolor(gameboard,boxx,boxy)
                 drawicon(shape,color,boxx,boxy)
                 
 def highlightbox(boxx,boxy):
     left,top = lefttopcoords(boxx,boxy)
-    pg.draw.rect(display,WHITE,(left - 5, top - 5,boxsize + 10,boxsize + 10), 4)
+    pg.draw.rect(display,bgcolor,(left - 5, top - 5,boxsize + 10,boxsize + 10), 4)
     
     
 def randomizeboard():
@@ -126,14 +130,14 @@ def randomizeboard():
         for shape in allshapes:
             symbols.append((shape,color))  #each item or symbol consist of two attributes (shape, color)
     random.shuffle(symbols) #randomize symbols list
-    x=int(boardwitdth*boardlength/2)  #number of symbols used
+    x=int(boardwidth*boardheight/2)  #number of symbols used
     symbols=symbols[:x]*2  #double
     random.shuffle(symbols) #randomize symbols list again since doubled
     board=[]
     for x in range(boardwidth):
         column=[]
         for y in range(boardheight):
-            column.append(symbol [0])
+            column.append(symbols [0])
     
 def startgame(gameboard):
     coveredboxes = generaterevealedboxesdata(False)
@@ -150,8 +154,8 @@ def startgame(gameboard):
     
 def gamewon(gameboard):
     coveredboxes = generaterevealedboxesdata(True)
-    color1 = WHITE
-    color2 = TEAL
+    color1 = bgcolor
+    color2 = bgcolor2
     for i in range(13):
         color1,color2 = color2,color1
         display.fill(color1)
@@ -167,19 +171,19 @@ def win(revealedboxes):
 
 def game():  #main game function
     pg.init()  #initiate pygame
-    global(clock,display)  #global variables to be used in more functions
+    global clock,display  #global variables to be used in more functions
     clock=pg.time.clock() #clock from pygame
     display=pg.display.set_mode(windowwidth,windowheight)  #show the game screen
     mousex=0
     mousey=0
     gameboard=randomizeboard()  #function to randomize board
     revealedboxes=boxesdata(False)  #all boxes unrevealed
-    display.fill(WHITE)   #add color background
+    display.fill(bgcolor)   #add color background
     firstchoice=none
     startgame(gameboard)  #function to flash symbols underneath boxes
     while true:
         click=false
-        display.fill(WHITE) #fill screen to cover
+        display.fill(bgcolor) #fill screen to cover
         drawboard(gameboard,revealedboxes)
         for event in pg.event.get():
             if event.type==QUIT:   #if hit quit, quit
