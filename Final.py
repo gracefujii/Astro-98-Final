@@ -5,8 +5,21 @@ import pygame as pg
 
 
 
-
-
+def randomizeboard():
+    symbols=[]
+    For color in allcolors:
+        For shape in allshapes:
+            symbols.append((shape,color))  #each item or symbol consist of two attributes (shape, color)
+    random.shuffle(symbols) #randomize symbols list
+    x=int(boardwitdth*boardlength/2)  #number of symbols used
+    symbols=symbols[:x]*2  #double
+    random.shuffle(symbols) #randomize symbols list again since doubled
+    board=[]
+    for x in range(boardwidth):
+        column=[]
+        for y in range(boardheight):
+            column.append(symbol [0])
+    
 def game ():  #main game function
     pg.init()  #initiate pygame
     global(clock,display)  #global variables to be used in more functions
@@ -62,7 +75,8 @@ def game ():  #main game function
                     firstchoice=none
             pg.display.update
             clock.tick(fps)
-                
+           
+
                 
                 
                 
