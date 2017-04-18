@@ -215,8 +215,8 @@ def game():  #main game function
                         pg.time.wait(1000)
                         startgame(gameboard)
                     firstchoice=None
-            pg.display.update
-            clock.tick(fps)
+        pg.display.update
+        clock.tick(fps)
 
 class GameMenu():
     def __init__(self, screen, bg_color=(0,0,0)):
