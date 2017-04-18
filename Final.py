@@ -1,7 +1,7 @@
 import pygame as pg
 
-FPS = 30
-
+fps = 30
+#board parameters
 windowwidth = 1000
 windowheight = 600
 boxsize = 60
@@ -12,6 +12,7 @@ revealspeed = 8
 xmargin = int((windowwidth - (boardwidth * (boxsize + gapsize))) / 2)
 ymargin = int((windowheight - (boardheight * (boxsize + gapsize))) / 2)
 
+#colors    R    G    B
 BLACK =  (  0,   0,   0)
 WHITE =  (255, 255, 255)
 GRAY =   ( 80, 100, 120)
@@ -31,6 +32,13 @@ def drawboard(gameboard,revealedboxes):
             left,top = lefttopcoords(boxx,boxy)
             if not revealed[boxx][boxy]:
                 pg.draw.rect(display,BLUE,(left,top,boxsize,boxsize))
+            else:
+                shape,color = getshapeandcolor(gameboard,boxx,boxy)
+                drawicon(shape,color,boxx,boxy)
+                
+def drawhighlightbox(boxx,boxy):
+    left,top = lefttopcoords(boxx,boxy)
+    pg.draw.rect(display,WHITE,(left - 5, top - 5,boxsize + 10,boxsize + 10), 4)
 
 def randomizeboard():
     symbols=[]
@@ -47,13 +55,13 @@ def randomizeboard():
         for y in range(boardheight):
             column.append(symbol [0])
     
-def game ():  #main game function
+def game():  #main game function
     pg.init()  #initiate pygame
     global(clock,display)  #global variables to be used in more functions
     clock=pg.time.clock()
     display=pg.display.set_mode(windowwidth,windowheight)  #show the game screen
-    mousex=o
-    mousey=o
+    mousex=0
+    mousey=0
     gameboard=randomizeboard()  #function to randomize board
     revealedboxes=generaterevealedboxesdata(False)  #all boxes unrevealed
     display.fill(WHITE)   #add color background
