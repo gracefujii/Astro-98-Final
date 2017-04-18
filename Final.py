@@ -233,11 +233,11 @@ class GameMenu():
                     mainloop = False
         # Redraw the background
             self.screen.fill(self.bg_color)
-            pygame.display.flip()
+            pg.display.flip()
 if __name__ == "__main__":
     # Creating the screen
-    screen = pygame.display.set_mode((640, 480), 0, 32)
-    pygame.display.set_caption('Game Menu')
+    screen = pg.display.set_mode((640, 480), 0, 32)
+    pg.display.set_caption('Game Menu')
     gm = GameMenu(screen)
     gm.run()
                 
