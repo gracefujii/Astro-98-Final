@@ -18,8 +18,6 @@ CIRCLE = 'circle'
 SQUARE = 'square'
 LINE = 'line'
 ELLIPSE = 'ellipse'
-TRIANGLE = 'triangle'
-
 
 #colors    R    G    B
 BLACK =  (  0,   0,   0)
