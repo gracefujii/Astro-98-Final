@@ -57,7 +57,7 @@ def drawIcon(shape,color,boxx,boxy):
         pygame.draw.ellipse(display, color, (left, top + quarter, boxsize, half))
         
         
-def splitintogroupsof(groupsize,thelist):
+def splitgroups(groupsize,thelist):
     result = []
     for i in range(0,len(thelist),groupsize):
         result.append(theList[i:i + groupsize])
@@ -80,22 +80,22 @@ def lefttopcoords(boxx,boxy):
 def getshapeandcolor(gameboard,boxx,boxy):
     return board[boxx][boxy][0],board[boxx][boxy][1]
 
-def drawboxcovers(gameboard,boxes,coverage):
+def boxcovers(board,boxes,coverage):
     for box in boxes:
         left,top = lefttopcoords(box[0],box[1])
         pg.draw.rect(display,WHITE,(left,top,boxsize,boxsize))
-        shape,color = getshapeandcolor(gameboard,box[0],box[1])
+        shape,color = getshapeandcolor(board,box[0],box[1])
         drawicon(shape,color,box[0],box[1])
         if coverage > 0:
             pg.draw.rect(display,GRAY,(left,top,coverage,boxsize))
     pg.display.update()
     fpsclock.tick(fps)
             
-def revealboxesanimation(gameboard,boxestoreveal):
+def revealboxes(gameboard,boxestoreveal):
     for coverage in range(boxsize,(-revealspeed) - 1, -revealspeed):
         drawboxcovers(gameboard,boxestoreveal,coverage)
 
-def coverboxesanimation(gameboard,boxestocover):
+def coverboxes(gameboard,boxestocover):
     for coverage in range(0,boxsize + revealspeed,revealspeed):
         drawboxcovers(gameboard,boxestocover,coverage)
 
@@ -109,11 +109,11 @@ def drawboard(gameboard,revealedboxes):
                 shape,color = getshapeandcolor(gameboard,boxx,boxy)
                 drawicon(shape,color,boxx,boxy)
                 
-def drawhighlightbox(boxx,boxy):
+def highlightbox(boxx,boxy):
     left,top = lefttopcoords(boxx,boxy)
     pg.draw.rect(display,WHITE,(left - 5, top - 5,boxsize + 10,boxsize + 10), 4)
     
-def startgameanimation(gameboard):
+def startgame(gameboard):
     coveredboxes = generaterevealedboxesdata(False)
     boxes = []
     for x in range(boardwidth):
@@ -126,7 +126,7 @@ def startgameanimation(gameboard):
         revealboxesanimation(gameboard,boxgroup)
         coverboxesanimation(gameboard,boxgroup)
     
-def gamewonanimation(gameboard):
+def gamewon(gameboard):
     coveredboxes = generaterevealedboxesdata(True)
     color1 = WHITE
     color2 = TEAL
@@ -157,6 +157,14 @@ def randomizeboard():
         column=[]
         for y in range(boardheight):
             column.append(symbol [0])
+            
+def boxesdata(x):
+    revealedboxes=[]
+    for i in range(boardwidth):
+        revealedboxes.append([x]*boardheight)
+    return revealedboxes
+
+
     
 def game():  #main game function
     pg.init()  #initiate pygame
@@ -166,10 +174,10 @@ def game():  #main game function
     mousex=0
     mousey=0
     gameboard=randomizeboard()  #function to randomize board
-    revealedboxes=generaterevealedboxesdata(False)  #all boxes unrevealed
+    revealedboxes=boxesdata(False)  #all boxes unrevealed
     display.fill(WHITE)   #add color background
     firstchoice=none
-    startgameanimation(gameboard)  #function to flash symbols underneath boxes
+    startgame(gameboard)  #function to flash symbols underneath boxes
     while true:
         click=false
         display.fill(WHITE) #fill screen to cover
@@ -186,7 +194,7 @@ def game():  #main game function
         box_x,box_y=getboxatpixel(mousex, mousey)
         if box_x==none and box_y==none:   #if mouse over box
             if not revealedboxes[box_x][box_y]:  #if box is covered
-                drawhighlightbox (box_x,box_y)   #highlight box function
+                highlightbox (box_x,box_y)   #highlight box function
             if not revealedboxes[box_x][box_y] and click:  #if box is covered and clicke
                 revealboxes (gameboard,[(box_x,box_y)])  #reveal box
                 revealedboxes[box_x][box_y]=true  #set box as revealed
@@ -205,11 +213,11 @@ def game():  #main game function
                         pg.time.wait(2000)
                     
                         gameboard=randomizeboard()     #restart game, remix board
-                        revealedboxes=generaterevealedboxesdata(False)
+                        revealedboxes=boxesdata(False)
                         drawboard(gameboard,revealedboxes)  #function to show board
                         pg.display.update()
                         pg.time.wait(1000)
-                        startgameanimation(gameboard)
+                        startgame(gameboard)
                     firstchoice=none
             pg.display.update
             clock.tick(fps)
