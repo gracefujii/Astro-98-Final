@@ -39,19 +39,27 @@ def game ():  #main game function
             if not revealedboxes[box_x][box_y] and click:  #if box is covered and clicke
                 revealboxesanimation (gameboard,[(box_x,box_y)])  #reveal box
                 revealedboxes[box_x][box_y]=true  #set box as revealed
-                if firstchoice==none:  #if first box clicked
+                if firstchoice==none:  #if first box clicked..
                     firstchoice= (box_x,box_y)  #save first choice details
                 else:    #if second box chosen
                     shape1,color1= getshapeandcolor(gameboard, firstchoice[0], firstchoice[1])  #get shapes ans colors of boxes uncovered
                     shape2,color2= getshapeandcolor(gameboard, box_x, box_y)
-                    if shape1!= shape2 or color1 != color2
+                    if shape1!= shape2 or color1 != color2   #if the symbols do not match...
+                        pg.time.wait(1000)   #pause for moment so player can see symbols don't match
+                        coverboxesanimation(gameboard,[(firstchoice[0],firstchoice[1]),(box_x,box_y)])  #cover boxes up
+                        revealedboxes[firstchoice[0]][firstchoice[1]]=false   #first choice box now unrevealed till next click
+                        revealedboxes[box_x][box_y]=false   #same for second choice
+                    elif win(revealedboxes):  #if symbols match then check if all boxes uncovered with win function
+                        gamewonanimation(gameboard)
+                        pg.time.wait(2000)
+                    
+                        gameboard=getrandomizedboard()     #restart game, remix board
+                        revealedboxes=generaterevealedboxesdata(False)
+                        drawboard(gameboard,revealedboxes)  #show board
+                        pg.display.update()
                         pg.time.wait(1000)
-                        coverboxesanimation(gameboard,[(firstchoice[0],firstchoice[1]),(box_x,box_y)])
-                        revealedboxes[firstchoice[0]][firstchoice[1]]=false
-                        revealedboxes[box_x][box_y]=false
-                    
-                    
-                
+                        startgameanimation(gameboard)
+                    firstchoice=none
                 
                 
                 
