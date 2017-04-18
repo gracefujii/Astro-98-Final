@@ -34,7 +34,7 @@ PEACH =  (240, 180, 160)
 YELLOW = (250, 200,  50)
 
 allcolors = (GRAY,GREEN,RED,TEAL,PURPLE,PEACH,YELLOW)
-allshapes = (CIRCLE,SQUARE,LINE,ELLIPSE,TRIANGLE)
+allshapes = (CIRCLE,SQUARE,LINE,ELLIPSE)
 bgcolor = WHITE
 bgcolor2 = TEAL
 boxcolor = BLUE
@@ -50,9 +50,6 @@ def drawIcon(shape,color,boxx,boxy):
         pygame.draw.circle(display, color, (left + half, top + half), half - 5)
     elif shape == SQUARE:
         pygame.draw.rect(display, color, (left + quarter, top + quarter, boxsize - half, boxsize - half))
-        
-    elif shape == TRIANGLE:
-        pygame.draw.
         
     elif shape == LINES:
         for i in range(0, boxsize, 4):
