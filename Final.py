@@ -8,17 +8,17 @@ import pygame as pg
 
 
 def game ():  #main game function
-    pg.init()
-    global(clock,display)  #global variables to be used in other functions
+    pg.init()  #initiate pygame
+    global(clock,display)  #global variables to be used in more functions
     clock=pg.time.clock()
     display=pg.display.set_mode(windowwidth,windowheight)  #show the game screen
     mousex=o
     mousey=o
-    gameboard=getrandomizedboard()
-    revealedboxes=generaterevealedboxesdata(False)
+    gameboard=randomizeboard()  #function to randomize board
+    revealedboxes=generaterevealedboxesdata(False)  #all boxes unrevealed
     display.fill()   #add color background
     firstchoice=none
-    startgameanimation(gameboard)  #flash symbols underneath boxes
+    startgameanimation(gameboard)  #function to flash symbols underneath boxes
     while true:
         click=false
         display.fill() #fill screen to cover
@@ -35,9 +35,9 @@ def game ():  #main game function
         box_x,box_y=getboxatpixel(mousex, mousey)
         if box_x==none and box_y==none:   #if mouse over box
             if not revealedboxes[box_x][box_y]:  #if box is covered
-                drawhighlightbox (box_x,box_y)   #highlight box
+                drawhighlightbox (box_x,box_y)   #highlight box function
             if not revealedboxes[box_x][box_y] and click:  #if box is covered and clicke
-                revealboxesanimation (gameboard,[(box_x,box_y)])  #reveal box
+                revealboxes (gameboard,[(box_x,box_y)])  #reveal box
                 revealedboxes[box_x][box_y]=true  #set box as revealed
                 if firstchoice==none:  #if first box clicked..
                     firstchoice= (box_x,box_y)  #save first choice details
@@ -50,16 +50,18 @@ def game ():  #main game function
                         revealedboxes[firstchoice[0]][firstchoice[1]]=false   #first choice box now unrevealed till next click
                         revealedboxes[box_x][box_y]=false   #same for second choice
                     elif win(revealedboxes):  #if symbols match then check if all boxes uncovered with win function
-                        gamewonanimation(gameboard)
+                        gamewonanimation(gameboard) #function for animation if won
                         pg.time.wait(2000)
                     
-                        gameboard=getrandomizedboard()     #restart game, remix board
+                        gameboard=randomizeboard()     #restart game, remix board
                         revealedboxes=generaterevealedboxesdata(False)
-                        drawboard(gameboard,revealedboxes)  #show board
+                        drawboard(gameboard,revealedboxes)  #function to show board
                         pg.display.update()
                         pg.time.wait(1000)
                         startgameanimation(gameboard)
                     firstchoice=none
+            pg.display.update
+            clock.tick(fps)
                 
                 
                 
