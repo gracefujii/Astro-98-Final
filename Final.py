@@ -166,13 +166,13 @@ def game():  #main game function
     pg.init()  #initiate pygame
     global clock,display  #global variables to be used in more functions
     clock=pg.time.Clock() #clock from pygame
-    display=pg.display.set_mode(windowwidth,windowheight)  #show the game screen
+    display=pg.display.set_mode((windowwidth,windowheight))  #show the game screen
     mousex=0
     mousey=0
     gameboard=randomizeboard()  #function to randomize board
     revealedboxes=boxesdata(False)  #all boxes unrevealed
     display.fill(bgcolor)   #add color background
-    firstchoice=none
+    firstchoice=None
     startgame(gameboard)  #function to flash symbols underneath boxes
     while true:
         click=false
@@ -188,13 +188,13 @@ def game():  #main game function
                 mousex, mousey== mousemotion
                 click=true
         box_x,box_y=getboxatpixel(mousex, mousey)
-        if box_x==none and box_y==none:   #if mouse over box
+        if box_x==None and box_y==None:   #if mouse over box
             if not revealedboxes[box_x][box_y]:  #if box is covered
                 highlightbox (box_x,box_y)   #highlight box function
             if not revealedboxes[box_x][box_y] and click:  #if box is covered and clicke
                 revealboxes (gameboard,[(box_x,box_y)])  #reveal boxes function
                 revealedboxes[box_x][box_y]=true  #set box as revealed
-                if firstchoice==none:  #if first box clicked..
+                if firstchoice==None:  #if first box clicked..
                     firstchoice= (box_x,box_y)  #save first choice details
                 else:    #if second box chosen
                     shape1,color1= getshapeandcolor(gameboard, firstchoice[0], firstchoice[1])  #get shapes ans colors of boxes uncovered
@@ -214,7 +214,7 @@ def game():  #main game function
                         pg.display.update()
                         pg.time.wait(1000)
                         startgame(gameboard)
-                    firstchoice=none
+                    firstchoice=None
             pg.display.update
             clock.tick(fps)
 
