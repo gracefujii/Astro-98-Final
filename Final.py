@@ -187,23 +187,23 @@ def game():  #main game function
             elif event.type== mousebuttonup: # or if mouse was clicked
                 mousex, mousey== mousemotion
                 click=true
-        box_x,box_y=getboxatpixel(mousex, mousey)
-        if box_x==None and box_y==None:   #if mouse over box
-            if not revealedboxes[box_x][box_y]:  #if box is covered
-                highlightbox (box_x,box_y)   #highlight box function
-            if not revealedboxes[box_x][box_y] and click:  #if box is covered and clicke
-                revealboxes (gameboard,[(box_x,box_y)])  #reveal boxes function
-                revealedboxes[box_x][box_y]=true  #set box as revealed
+        boxx,boxy=getboxatpixel(mousex, mousey)
+        if boxx==None and boxy==None:   #if mouse over box
+            if not revealedboxes[boxx][boxy]:  #if box is covered
+                highlightbox (boxx,boxy)   #highlight box function
+            if not revealedboxes[boxx][boxy] and click:  #if box is covered and clicke
+                revealboxes (gameboard,[(boxx,boxy)])  #reveal boxes function
+                revealedboxes[boxx][boxy]=true  #set box as revealed
                 if firstchoice==None:  #if first box clicked..
-                    firstchoice= (box_x,box_y)  #save first choice details
+                    firstchoice= (boxx,boxy)  #save first choice details
                 else:    #if second box chosen
                     shape1,color1= getshapeandcolor(gameboard, firstchoice[0], firstchoice[1])  #get shapes ans colors of boxes uncovered
-                    shape2,color2= getshapeandcolor(gameboard, box_x, box_y)
+                    shape2,color2= getshapeandcolor(gameboard, boxx, boxy)
                     if shape1!= shape2 or color1 != color2:   #if the symbols do not match...
                         pg.time.wait(1000)   #pause for moment so player can see symbols don't match
-                        coverboxes(gameboard,[(firstchoice[0],firstchoice[1]),(box_x,box_y)])  #cover boxes up
+                        coverboxes(gameboard,[(firstchoice[0],firstchoice[1]),(boxx,boxy)])  #cover boxes up
                         revealedboxes[firstchoice[0]][firstchoice[1]]=false   #first choice box now unrevealed till next click
-                        revealedboxes[box_x][box_y]=false   #same for second choice
+                        revealedboxes[boxx][boxy]=false   #same for second choice
                     elif win(revealedboxes):  #if symbols match then check if all boxes uncovered with win function
                         gamewonanimation(gameboard) #function for animation if won
                         pg.time.wait(2000)
