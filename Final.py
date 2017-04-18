@@ -44,15 +44,15 @@ def drawIcon(shape,color,boxx,boxy):
     left, top = leftTopCoordsOfBox(boxx, boxy) # get coordinates from board 
     # to draw the shapes of the things to find. Uses draw method which is pre made.
     if shape == CIRCLE:
-        pygame.draw.circle(display, color, (left + half, top + half), half - 5)
+        pg.draw.circle(display, color, (left + half, top + half), half - 5)
     elif shape == SQUARE:
-        pygame.draw.rect(display, color, (left + quarter, top + quarter, boxsize - half, boxsize - half))   
+        pg.draw.rect(display, color, (left + quarter, top + quarter, boxsize - half, boxsize - half))   
     elif shape == LINES:
         for i in range(0, boxsize, 4):
-            pygame.draw.line(display, color, (left, top + i), (left + i, top))
-            pygame.draw.line(display, color, (left + i, top + boxsize - 1), (left + boxsize - 1, top + i))
+            pg.draw.line(display, color, (left, top + i), (left + i, top))
+            pg.draw.line(display, color, (left + i, top + boxsize - 1), (left + boxsize - 1, top + i))
     elif shape == ELLIPSE:
-        pygame.draw.ellipse(display, color, (left, top + quarter, boxsize, half))
+        pg.draw.ellipse(display, color, (left, top + quarter, boxsize, half))
         
 def getshapeandcolor(gameboard,boxx,boxy):
     return board[boxx][boxy][0],board[boxx][boxy][1]
