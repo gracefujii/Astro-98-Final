@@ -7,8 +7,8 @@ windowwidth = 1000
 windowheight = 600
 boxsize = 60
 gapsize = 10
-boardwidth = 6
-boardheight = 6
+boardwidth = 8
+boardheight = 5
 revealspeed = 8
 xmargin = int((windowwidth - (boardwidth * (boxsize + gapsize))) / 2)
 ymargin = int((windowheight - (boardheight * (boxsize + gapsize))) / 2)
@@ -31,14 +31,13 @@ PURPLE = (100,  80, 120)
 PEACH =  (240, 180, 160)
 YELLOW = (250, 200,  50)
 
-allcolors = (GRAY,GREEN,RED,TEAL,PURPLE,PEACH,YELLOW)
+allcolors = (GREEN,RED,PURPLE,PEACH,YELLOW)
 allshapes = (CIRCLE,SQUARE,LINE,ELLIPSE)
 bgcolor = WHITE
 bgcolor2 = TEAL
 boxcolor = BLUE
 boxcolor2 = GRAY
 
-# need to figure out triangle
 def drawIcon(shape,color,boxx,boxy):
     quart = int(boxsize * .25)
     half = int(boxsize * .5)
@@ -47,8 +46,7 @@ def drawIcon(shape,color,boxx,boxy):
     if shape == CIRCLE:
         pygame.draw.circle(display, color, (left + half, top + half), half - 5)
     elif shape == SQUARE:
-        pygame.draw.rect(display, color, (left + quarter, top + quarter, boxsize - half, boxsize - half))
-        
+        pygame.draw.rect(display, color, (left + quarter, top + quarter, boxsize - half, boxsize - half))   
     elif shape == LINES:
         for i in range(0, boxsize, 4):
             pygame.draw.line(display, color, (left, top + i), (left + i, top))
