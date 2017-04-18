@@ -12,6 +12,14 @@ revealspeed = 8
 xmargin = int((windowwidth - (boardwidth * (boxsize + gapsize))) / 2)
 ymargin = int((windowheight - (boardheight * (boxsize + gapsize))) / 2)
 
+#shapes for the game 
+CIRCLE = 'circle'
+SQUARE = 'square'
+LINE = 'line'
+ELLIPSE = 'ellipse'
+TRIANGLE = 'triangle'
+
+
 #colors    R    G    B
 BLACK =  (  0,   0,   0)
 WHITE =  (255, 255, 255)
@@ -25,7 +33,30 @@ PEACH =  (240, 180, 160)
 YELLOW = (250, 200,  50)
 
 allcolors = (GRAY,GREEN,RED,TEAL,PURPLE,PEACH,YELLOW)
+allshapes = (CIRCLE,SQUARE,LINE,ELLIPSE,TRIANGLE)
 
+# need to figure out triangle
+def drawIcon(shape,color,boxx,boxy):
+    quart = int(boxsize * .25)
+    half = int(boxsize * .5)
+    left, top = leftTopCoordsOfBox(boxx, boxy) # get coordinates from board 
+    # to draw the shapes of the thigns to find. Uses draw method which is pre made.
+    if shape == CIRCLE:
+        pygame.draw.circle(display, color, (left + half, top + half), half - 5)
+    elif shape == SQUARE:
+        pygame.draw.rect(display, color, (left + quarter, top + quarter, boxsize - half, boxsize - half))
+        
+    elif shape == TRIANGLE:
+        pygame.draw.
+        
+    elif shape == LINES:
+        for i in range(0, boxsize, 4):
+            pygame.draw.line(display, color, (left, top + i), (left + i, top))
+            pygame.draw.line(display, color, (left + i, top + boxsize - 1), (left + boxsize - 1, top + i))
+    elif shape == ELLIPSE:
+        pygame.draw.ellipse(display, color, (left, top + quarter, boxsize, half))
+        
+        
 def splitintogroupsof(groupsize,thelist):
     result = []
     for i in range(0,len(thelist),groupsize):
