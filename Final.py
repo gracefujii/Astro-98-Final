@@ -1,5 +1,6 @@
 import pygame as pg
 import random
+from pygame.locals import*
 
 fps = 30
 #board parameters
