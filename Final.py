@@ -197,7 +197,7 @@ def startgame(gameboard):
         for y in range(boardheight):
             boxes.append((x,y))
     random.shuffle(boxes)
-    boxgroups = splitintogroupsof(6,boxes)
+    boxgroups = splitgroups(6,boxes)
     drawboard(gameboard,coveredboxes)
     for boxgroup in boxgroups:
         revealboxesanimation(gameboard,boxgroup)
@@ -243,6 +243,7 @@ if __name__ == "__main__":
     gm = GameMenu(screen)
     gm.run()
                 
-game()
+if __name__ == '__game__':
+    game()
                 
                 
