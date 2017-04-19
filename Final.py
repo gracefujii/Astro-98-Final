@@ -243,6 +243,6 @@ if __name__ == "__main__":
     gm.run()
                 
 if __name__ == '__main__':
-    main()
+    game()
                 
                 
