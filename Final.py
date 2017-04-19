@@ -219,29 +219,6 @@ def game():  #main game function
         pg.display.update
         clock.tick(fps)
 
-class GameMenu():
-    def __init__(self, screen, bg_color=(0,0,0)):
-        self.screen = screen
-        self.bg_color = bg_color
-        self.clock = pg.time.Clock()
-    def run(self):
-        mainloop = True
-        while mainloop:
-            # Limit frame speed to 50 FPS
-            self.clock.tick(50)
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    mainloop = False
-        # Redraw the background
-            self.screen.fill(self.bg_color)
-            pg.display.flip()
-if __name__ == "__main__":
-    # Creating the screen
-    screen = pg.display.set_mode((640, 480), 0, 32)
-    pg.display.set_caption('Game Menu')
-    gm = GameMenu(screen)
-    gm.run()
-                
-game.run()
+game()
                 
                 
