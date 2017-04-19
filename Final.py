@@ -39,6 +39,63 @@ bgcolor2 = TEAL
 boxcolor = BLUE
 boxcolor2 = GRAY
 
+
+def game():  #main game function
+    pg.init()  #initiate pygame
+    global clock,display  #global variables to be used in more functions
+    clock=pg.time.Clock() #clock from pygame
+    display=pg.display.set_mode((windowwidth,windowheight))  #show the game screen
+    mousex=0
+    mousey=0
+    gameboard=randomizeboard()  #function to randomize board
+    revealedboxes=boxesdata(False)  #all boxes unrevealed
+    display.fill(bgcolor)   #add color background
+    firstchoice=None
+    startgame(gameboard)  #function to flash symbols underneath boxes
+    while true:
+        click=false
+        display.fill(bgcolor) #fill screen to cover
+        drawboard(gameboard,revealedboxes)
+        for event in pg.event.get():
+            if event.type==QUIT:   #if hit quit, quit
+                pg.quit()
+                sys.exit()
+            elif event.type== mousemotion: #otherwise if mouse moves..
+                mousex, mousey= event.pos  #update mouse postion
+            elif event.type== mousebuttonup: # or if mouse was clicked
+                mousex, mousey== mousemotion
+                click=true
+        boxx,boxy=getboxatpixel(mousex, mousey)
+        if boxx==None and boxy==None:   #if mouse over box
+            if not revealedboxes[boxx][boxy]:  #if box is covered
+                highlightbox (boxx,boxy)   #highlight box function
+            if not revealedboxes[boxx][boxy] and click:  #if box is covered and clicke
+                revealboxes (gameboard,[(boxx,boxy)])  #reveal boxes function
+                revealedboxes[boxx][boxy]=true  #set box as revealed
+                if firstchoice==None:  #if first box clicked..
+                    firstchoice= (boxx,boxy)  #save first choice details
+                else:    #if second box chosen
+                    shape1,color1= getshapeandcolor(gameboard, firstchoice[0], firstchoice[1])  #get shapes ans colors of boxes uncovered
+                    shape2,color2= getshapeandcolor(gameboard, boxx, boxy)
+                    if shape1!= shape2 or color1 != color2:   #if the symbols do not match...
+                        pg.time.wait(1000)   #pause for moment so player can see symbols don't match
+                        coverboxes(gameboard,[(firstchoice[0],firstchoice[1]),(boxx,boxy)])  #cover boxes up
+                        revealedboxes[firstchoice[0]][firstchoice[1]]=false   #first choice box now unrevealed till next click
+                        revealedboxes[boxx][boxy]=false   #same for second choice
+                    elif win(revealedboxes):  #if symbols match then check if all boxes uncovered with win function
+                        gamewonanimation(gameboard) #function for animation if won
+                        pg.time.wait(2000)
+                    
+                        gameboard=randomizeboard()     #restart game, remix board
+                        revealedboxes=boxesdata(False)
+                        drawboard(gameboard,revealedboxes)  #function to show board
+                        pg.display.update()
+                        pg.time.wait(1000)
+                        startgame(gameboard)
+                    firstchoice=None
+        pg.display.update
+        clock.tick(fps)
+
 def drawIcon(shape,color,boxx,boxy):
     quart = int(boxsize * .25)
     half = int(boxsize * .5)
@@ -134,7 +191,7 @@ def randomizeboard():
             column.append(symbols [0])
     
 def startgame(gameboard):
-    coveredboxes = generaterevealedboxesdata(False)
+    coveredboxes = boxesdata(False)
     boxes = []
     for x in range(boardwidth):
         for y in range(boardheight):
@@ -147,7 +204,7 @@ def startgame(gameboard):
         coverboxesanimation(gameboard,boxgroup)
     
 def gamewon(gameboard):
-    coveredboxes = generaterevealedboxesdata(True)
+    coveredboxes = boxesdata(True)
     color1 = bgcolor
     color2 = bgcolor2
     for i in range(13):
@@ -163,62 +220,30 @@ def win(revealedboxes):
             return False
     return True
 
-def game():  #main game function
-    pg.init()  #initiate pygame
-    global clock,display  #global variables to be used in more functions
-    clock=pg.time.Clock() #clock from pygame
-    display=pg.display.set_mode((windowwidth,windowheight))  #show the game screen
-    mousex=0
-    mousey=0
-    gameboard=randomizeboard()  #function to randomize board
-    revealedboxes=boxesdata(False)  #all boxes unrevealed
-    display.fill(bgcolor)   #add color background
-    firstchoice=None
-    startgame(gameboard)  #function to flash symbols underneath boxes
-    while true:
-        click=false
-        display.fill(bgcolor) #fill screen to cover
-        drawboard(gameboard,revealedboxes)
-        for event in pg.event.get():
-            if event.type==QUIT:   #if hit quit, quit
-                pg.quit()
-                sys.exit()
-            elif event.type== mousemotion: #otherwise if mouse moves..
-                mousex, mousey= event.pos  #update mouse postion
-            elif event.type== mousebuttonup: # or if mouse was clicked
-                mousex, mousey== mousemotion
-                click=true
-        boxx,boxy=getboxatpixel(mousex, mousey)
-        if boxx==None and boxy==None:   #if mouse over box
-            if not revealedboxes[boxx][boxy]:  #if box is covered
-                highlightbox (boxx,boxy)   #highlight box function
-            if not revealedboxes[boxx][boxy] and click:  #if box is covered and clicke
-                revealboxes (gameboard,[(boxx,boxy)])  #reveal boxes function
-                revealedboxes[boxx][boxy]=true  #set box as revealed
-                if firstchoice==None:  #if first box clicked..
-                    firstchoice= (boxx,boxy)  #save first choice details
-                else:    #if second box chosen
-                    shape1,color1= getshapeandcolor(gameboard, firstchoice[0], firstchoice[1])  #get shapes ans colors of boxes uncovered
-                    shape2,color2= getshapeandcolor(gameboard, boxx, boxy)
-                    if shape1!= shape2 or color1 != color2:   #if the symbols do not match...
-                        pg.time.wait(1000)   #pause for moment so player can see symbols don't match
-                        coverboxes(gameboard,[(firstchoice[0],firstchoice[1]),(boxx,boxy)])  #cover boxes up
-                        revealedboxes[firstchoice[0]][firstchoice[1]]=false   #first choice box now unrevealed till next click
-                        revealedboxes[boxx][boxy]=false   #same for second choice
-                    elif win(revealedboxes):  #if symbols match then check if all boxes uncovered with win function
-                        gamewonanimation(gameboard) #function for animation if won
-                        pg.time.wait(2000)
-                    
-                        gameboard=randomizeboard()     #restart game, remix board
-                        revealedboxes=boxesdata(False)
-                        drawboard(gameboard,revealedboxes)  #function to show board
-                        pg.display.update()
-                        pg.time.wait(1000)
-                        startgame(gameboard)
-                    firstchoice=None
-        pg.display.update
-        clock.tick(fps)
-
-game()
+class GameMenu():
+    def __init__(self, screen, bg_color=(0,0,0)):
+        self.screen = screen
+        self.bg_color = bg_color
+        self.clock = pg.time.Clock()
+    def run(self):
+        mainloop = True
+        while mainloop:
+            # Limit frame speed to 50 FPS
+            self.clock.tick(50)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    mainloop = False
+        # Redraw the background
+            self.screen.fill(self.bg_color)
+            pg.display.flip()
+if __name__ == "__main__":
+    # Creating the screen
+    screen = pg.display.set_mode((640, 480), 0, 32)
+    pg.display.set_caption('Game Menu')
+    gm = GameMenu(screen)
+    gm.run()
+                
+if __name__ == '__main__':
+    game()
                 
                 
