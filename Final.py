@@ -242,7 +242,6 @@ if __name__ == "__main__":
     gm = GameMenu(screen)
     gm.run()
                 
-if __name__ == '__main__':
-    game()
+game.run()
                 
                 
